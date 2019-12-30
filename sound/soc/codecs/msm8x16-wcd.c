@@ -3905,27 +3905,21 @@ void wcd_imped_config(struct snd_soc_codec *codec,
 	struct msm8x16_wcd_priv *msm8x16_wcd =
 				snd_soc_codec_get_drvdata(codec);
 #ifdef CONFIG_8916_IMPEDANCE_TUNE
-	if (h_imped > 3) 
+	if (h_imped > 0) 
 	{
 		value = h_imped;
-		pr_info("%s: used manually selected impedance = %d Ohm\n",
-			__func__, value);
-	}
-	else if (h_imped == 1)
-	{
-		value = (wcd_get_impedance_value(imped) / 10);
-		pr_info("%s: used corrected impedance: %d Ohm\n",
+		pr_err("%s, used manually selected impedance = %d Ohm\n",
 			__func__, value);
 	}
 	else
 #endif
 		value = wcd_get_impedance_value(imped);
 
-	pr_info("%s: detected impedance: %d Ohm\n",
+	pr_err("%s, detected impedance = %d Ohm\n",
 			__func__, wcd_get_impedance_value(imped));
 
 	if (value < wcd_imped_val[0]) {
-		pr_info("%s, detected impedance is less than 4 Ohm\n",
+		pr_debug("%s, detected impedance is less than 4 Ohm\n",
 			 __func__);
 		return;
 	}
@@ -5514,13 +5508,10 @@ static ssize_t headphone_impedance_store(struct kobject *kobj,
 
 	sscanf(buf, "%d", &input_l);
 
-	if (input_l < 0 || input_l > 160 || input_l == 2 || input_l == 3)
+	if (input_l < 4 || input_l > 160)
 		h_imped = 0;
 
 	h_imped = input_l;
-
-	pr_info("%s: impedance control state = %d\n",
-			__func__, h_imped);
 
 	return count;
 }
