@@ -3568,7 +3568,7 @@ CONFIG_NLS_UTF8=y
 # CONFIG_DLM is not set
 # CONFIG_REBOOT_AUTO_FSYNC is not set
 # CONFIG_PANIC_LOG_ON_FS is not set
-# CONFIG_SWITCH_NOATIME is not set
+CONFIG_SWITCH_NOATIME=y
 
 #
 # Kernel hacking
